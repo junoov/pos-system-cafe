@@ -1,36 +1,147 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# POS Kasir Cafe (Next.js + MySQL)
 
-## Getting Started
+Aplikasi Point of Sale (POS) untuk cafe yang dibangun dengan Next.js App Router, TypeScript, Tailwind CSS, dan MySQL.
 
-First, run the development server:
+Fitur utama mencakup kasir transaksi, manajemen menu dan stok, pengelolaan partner, riwayat transaksi, laporan harian/bulanan, serta export Excel.
+
+## Tampilan Aplikasi
+
+### Halaman Kasir (POS)
+![Tampilan Halaman Kasir POS](./docs/screenshots/kasir-page.png)
+
+### Halaman Riwayat Transaksi & Laporan
+![Tampilan Laporan & Riwayat Hari Ini](./docs/screenshots/history-page.png)
+
+### Halaman Login
+![Tampilan Login Authentication](./docs/screenshots/login-page.png)
+
+## Fitur Utama
+
+- Autentikasi login sederhana berbasis cookie session.
+- Halaman kasir interaktif (pilih kategori, atur varian produk, keranjang, metode bayar).
+- Cetak struk 80mm langsung dari browser (`window.print`).
+- Manajemen menu: tambah produk, upload gambar, update stok, hapus produk.
+- Modul pesanan aktif: tandai status order dari `Diproses` ke `Selesai`.
+- Riwayat transaksi + ringkasan laporan (pendapatan, kategori terlaris, produk terlaris).
+- Export data riwayat ke file `.xlsx`.
+- Pengaturan toko: nama, alamat, telepon, pajak, serta data outlet.
+
+## Tech Stack
+
+- Next.js 16 (App Router)
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- MySQL (`mysql2`)
+- Lucide React (icon)
+- `xlsx` (export Excel)
+
+## Struktur Proyek
+
+```txt
+.
+|- database/
+|  `- schema.sql
+|- public/
+|  `- images/
+|- src/
+|  |- app/
+|  |  |- (dashboard)/
+|  |  |- login/
+|  |  |- layout.tsx
+|  |  `- providers.tsx
+|  |- components/
+|  `- lib/
+|     |- actions/
+|     |- cart-context.tsx
+|     `- db.ts
+`- package.json
+```
+
+## Persyaratan
+
+- Node.js 20+
+- npm 10+
+- MySQL 8+
+
+## Instalasi
+
+```bash
+git clone <repo-url>
+cd <nama-repo>
+npm install
+```
+
+## Konfigurasi Environment
+
+Buat file `.env.local` di root project:
+
+```env
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=pos_kasir_cafe
+SESSION_SECRET=ganti-dengan-random-string-panjang
+```
+
+Catatan: jika tidak diisi, aplikasi tetap memakai nilai default seperti di `src/lib/db.ts`.
+
+## Setup Database
+
+Jalankan schema SQL untuk membuat database, tabel, dan seed data awal:
+
+```bash
+mysql -u root -p < database/schema.sql
+```
+
+Seed data mencakup akun admin, kategori, produk contoh, stok awal, dan pengaturan toko.
+
+## Menjalankan Aplikasi
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka di browser: `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Akun Login Default
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Role  | Email                   | Password |
+|-------|-------------------------|----------|
+| Admin | admin@purrcoffee.local  | admin123 |
 
-## Learn More
+## Scripts
 
-To learn more about Next.js, take a look at the following resources:
+- `npm run dev` - jalankan mode development.
+- `npm run build` - build aplikasi production.
+- `npm run start` - jalankan hasil build.
+- `npm run lint` - jalankan ESLint.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Catatan Implementasi
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Data access menggunakan Server Actions (`src/lib/actions/*`).
+- Upload gambar produk disimpan ke `public/images`.
+- Middleware (`src/middleware.ts`) melindungi semua route selain `/login` dan aset statis.
+- Nilai `outletId` dan `userId` default saat ini menggunakan `1` (mode single outlet sederhana).
+- Password pada seed saat ini masih plain text (disarankan hashing untuk production).
 
-## Deploy on Vercel
+## Rute Utama
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `/login` - halaman login.
+- `/` - kasir utama.
+- `/menu` - kelola menu dan stok.
+- `/orders` - pesanan aktif.
+- `/history` - riwayat transaksi dan laporan.
+- `/partners` - data partner/supplier.
+- `/settings` - pengaturan toko dan outlet.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Troubleshooting Singkat
+
+- Gagal konek DB: cek `.env.local`, service MySQL, dan user/password.
+- Login gagal: pastikan seed database sudah ter-import dari `database/schema.sql`.
+- Gambar produk tidak muncul: pastikan folder `public/images` dapat ditulis aplikasi.
+
+## Lisensi
+
+Belum ada lisensi resmi di repository ini.
