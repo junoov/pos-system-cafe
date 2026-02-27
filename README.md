@@ -4,17 +4,6 @@ Aplikasi Point of Sale (POS) untuk cafe yang dibangun dengan Next.js App Router,
 
 Fitur utama mencakup kasir transaksi, manajemen menu dan stok, pengelolaan partner, riwayat transaksi, laporan harian/bulanan, serta export Excel.
 
-## Tampilan Aplikasi
-
-### Halaman Kasir (POS)
-![Tampilan Halaman Kasir POS](./docs/screenshots/kasir-page.png)
-
-### Halaman Riwayat Transaksi & Laporan
-![Tampilan Laporan & Riwayat Hari Ini](./docs/screenshots/history-page.png)
-
-### Halaman Login
-![Tampilan Login Authentication](./docs/screenshots/login-page.png)
-
 ## Fitur Utama
 
 - Autentikasi login sederhana berbasis cookie session.
@@ -142,6 +131,3 @@ Buka di browser: `http://localhost:3000`
 - Login gagal: pastikan seed database sudah ter-import dari `database/schema.sql`.
 - Gambar produk tidak muncul: pastikan folder `public/images` dapat ditulis aplikasi.
 
-## Lisensi
-
-Belum ada lisensi resmi di repository ini.
